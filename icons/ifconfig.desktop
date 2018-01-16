@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=ifconfig
+Comment=Run ifconfig command.
+Icon=/home/pitablet/Pictures/icons8-Web Address-40.png
+Exec=lxterminal -e '/bin/bash -c "/sbin/ifconfig; sleep 15"'
+Terminal=false
+Type=Application
