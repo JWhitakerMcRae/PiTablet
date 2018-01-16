@@ -55,10 +55,10 @@ RUN cd /lib && ln -s arm-linux-gnueabihf/libudev.so.1 libudev.so.0
 RUN apt-get update && apt-get -y install python-pip && \
     pip install -U awscli pyserial requests
 
-# Copy scripts, icons, media, and config files
+# Copy scripts, icons, and media
 COPY scripts/* /home/pitablet/
-COPY media/* /home/pitablet/Pictures/
 COPY icons/* /home/pitablet/Desktop/
+COPY media/* /home/pitablet/Pictures/
 RUN chown -R pitablet:pitablet /home/pitablet
 
 # Configure desktop preferences
