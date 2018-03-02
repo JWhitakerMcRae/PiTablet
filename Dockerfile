@@ -24,7 +24,7 @@ RUN apt-get update && apt-get -y install \
     lxde \
     xserver-xorg
 RUN apt-get update && apt-get -y install \
-    firefox
+    firefox-esr
 
 # Create default user, set to auto login
 RUN useradd -m "pitablet" && \
