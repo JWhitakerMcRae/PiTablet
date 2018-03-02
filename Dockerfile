@@ -34,7 +34,8 @@ RUN apt-get update && apt-get -y install \
     python-gi-cairo \
     python3-gi \
     python3-gi-cairo \
-    gir1.2-gtk-3.0
+    gir1.2-gtk-3.0 \
+    gobject-introspection
 
 # Create default user, set to auto login
 RUN useradd -m "pitablet" && \
