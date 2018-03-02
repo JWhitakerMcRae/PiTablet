@@ -23,6 +23,8 @@ RUN apt-get update && apt-get -y install \
     lightdm \
     lxde \
     xserver-xorg
+RUN apt-get update && apt-get -y install \
+    firefox
 
 # Create default user, set to auto login
 RUN useradd -m "pitablet" && \
