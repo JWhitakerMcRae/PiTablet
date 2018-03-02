@@ -13,6 +13,8 @@ RUN apt-get update && apt-get -y install \
     net-tools \
     openssh-server \
     pkgconf \
+    python-pip \
+    python3-pip \
     raspi-config \
     rpi-update \
     vim \
@@ -64,9 +66,11 @@ RUN cd /opt/SEGGER && ln -s JLink_Linux_V612f_arm JLink && \
 RUN cd /opt/SEGGER/JLink && ln -s libjlinkarm.so.6 libjlinkarm.so.5
 RUN cd /lib && ln -s arm-linux-gnueabihf/libudev.so.1 libudev.so.0
 
-# Install pip and other custom script requirements
-RUN apt-get update && apt-get -y install python-pip && \
-    pip install -U awscli pyserial requests
+# Install script requirements
+RUN pip install -U \
+    awscli \
+    pyserial \
+    requests
 
 # Copy scripts, icons, and media
 COPY scripts/* /home/pitablet/
