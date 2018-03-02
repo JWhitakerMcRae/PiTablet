@@ -22,13 +22,23 @@ RUN apt-get update && apt-get -y install \
 
 # Install LXDE desktop environment and dependencies
 RUN apt-get update && apt-get -y install \
-    lightdm \
     lxde \
+    lightdm \
     xserver-xorg
 
-# Install base applications
+# Install base applications (rec then sug)
 RUN apt-get update && apt-get -y install \
-    firefox-esr
+    clipit \
+    firefox-esr \
+    gnome-mplayer \
+    gnome-system-tools \
+    network-manager-gnome \
+    vlc \
+    usermode
+RUN apt-get update && apt-get -y install \
+    lxlauncher \
+    lxtask \
+    xfce4-power-manager
 
 # Install GTK+3 and dependencies (http://pygobject.readthedocs.io/en/latest/getting_started.html)
 RUN apt-get update && apt-get -y install \
