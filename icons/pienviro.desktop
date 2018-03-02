@@ -3,6 +3,6 @@ Encoding=UTF-8
 Name=PiEnviro
 Comment=Open PiEnviro dashboard.
 Icon=/home/pitablet/Pictures/home-Building-estate-house-Conservation-green-recycle-recycling-Ecology-environment-packaging-48.png
-Exec=lxterminal -e '/bin/bash -c "firefox -url http://192.168.1.15:3000/dashboard/db/pienviro"'
+Exec=lxterminal -e '/bin/bash -c "firefox -url http://192.168.1.15:3000/dashboard/db/pienviro &"'
 Terminal=false
 Type=Application
