@@ -23,8 +23,18 @@ RUN apt-get update && apt-get -y install \
     lightdm \
     lxde \
     xserver-xorg
+
+# Install base applications
 RUN apt-get update && apt-get -y install \
     firefox-esr
+
+# Install GTK+3 and dependencies (http://pygobject.readthedocs.io/en/latest/getting_started.html)
+RUN apt-get update && apt-get -y install \
+    python-gi \
+    python-gi-cairo \
+    python3-gi \
+    python3-gi-cairo \
+    gir1.2-gtk-3.0
 
 # Create default user, set to auto login
 RUN useradd -m "pitablet" && \
