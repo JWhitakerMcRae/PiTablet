@@ -1,4 +1,4 @@
 #!/bin/sh
 echo "Running start.sh ..."
-# TODO: insert anything needed here
+python3 /app/main.py
 echo "Done!"
