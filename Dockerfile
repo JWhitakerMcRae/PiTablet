@@ -52,7 +52,7 @@ RUN useradd -m "pitablet" && \
     echo "autologin-user=pitablet" >> /etc/lightdm/lightdm.conf
 
 # Install script requirements
-RUN pip install -U \
+RUN pip3 install -U \
     flask \
     gattlib \
     netifaces \
@@ -60,20 +60,22 @@ RUN pip install -U \
     pyserial \
     requests
 
-# Copy icons, media, and app
+# Copy user data
 USER pitablet
 COPY icons/* /home/pitablet/Desktop/
 COPY media/* /home/pitablet/Pictures/
+
+# Copy app data
 USER root
-COPY src/* /app/
+COPY config/* src/* /app/
 COPY start.sh /app/
 #RUN chown -R pitablet:pitablet /home/pitablet && \
 #    chown -R pitablet:pitablet /app && \
-RUN chmod +x /home/pitablet/start.sh
 
 # Configure desktop preferences
 RUN ln -s /home/pitablet/Pictures/Rocky\ Mountains\ \(Day\).png /etc/alternatives/desktop-background && \
     sed -i 's/single_click=0/single_click=1/g' /etc/xdg/libfm/libfm.conf
 
 # Complete boot
+RUN chmod +x /home/pitablet/start.sh
 CMD ["bash", "/home/pitablet/start.sh"]
