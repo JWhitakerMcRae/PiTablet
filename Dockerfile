@@ -33,7 +33,7 @@ RUN apt-get update && apt-get -y install \
     libbluetooth-dev \
     libboost-all-dev \
     libboost-python-dev \
-    libglib2.0-dev \
+    libglib2.0-dev
 
 # Install GTK+3 and dependencies (http://pygobject.readthedocs.io/en/latest/getting_started.html)
 RUN apt-get update && apt-get -y install \
@@ -67,8 +67,8 @@ COPY media/* /home/pitablet/Pictures/
 USER root
 COPY src/* /app/
 COPY start.sh /app/
-#RUN chown -R pitablet:pitablet /home/pitablet &&
-#    chown -R pitablet:pitablet /app &&
+#RUN chown -R pitablet:pitablet /home/pitablet && \
+#    chown -R pitablet:pitablet /app && \
 RUN chmod +x /home/pitablet/start.sh
 
 # Configure desktop preferences
