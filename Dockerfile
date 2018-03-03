@@ -76,5 +76,5 @@ COPY start.sh /app/
 RUN sed -i 's/single_click=0/single_click=1/g' /etc/xdg/libfm/libfm.conf
 
 # Complete boot
-RUN chmod +x /home/pitablet/start.sh
-CMD ["bash", "/home/pitablet/start.sh"]
+RUN chmod +x /app/start.sh
+CMD ["bash", "/app/start.sh"]
