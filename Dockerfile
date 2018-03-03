@@ -37,19 +37,10 @@ RUN apt-get update && apt-get -y install \
 
 # Install GTK+3 and dependencies (http://pygobject.readthedocs.io/en/latest/getting_started.html)
 RUN apt-get update && apt-get -y install \
-    python-gi \
-    python-gi-cairo \
+    gtk+3.0 \
+    gobject-introspection \
     python3-gi \
-    python3-gi-cairo \
-    gir1.2-gtk-3.0 \
-    gobject-introspection
-
-# Create default user, set to auto login
-RUN useradd -m "pitablet" && \
-    echo "root:pitablet1!" | chpasswd && \
-    echo "pitablet:pitablet1!" | chpasswd && \
-    echo "[SeatDefaults]" >> /etc/lightdm/lightdm.conf && \
-    echo "autologin-user=pitablet" >> /etc/lightdm/lightdm.conf
+    python3-gi-cairo
 
 # Install script requirements
 RUN pip3 install -U \
@@ -59,6 +50,13 @@ RUN pip3 install -U \
     pybluez \
     pyserial \
     requests
+
+# Create default user, set to auto login
+RUN useradd -m "pitablet" && \
+    echo "root:pitablet1!" | chpasswd && \
+    echo "pitablet:pitablet1!" | chpasswd && \
+    echo "[SeatDefaults]" >> /etc/lightdm/lightdm.conf && \
+    echo "autologin-user=pitablet" >> /etc/lightdm/lightdm.conf
 
 # Copy user data
 USER pitablet
@@ -73,8 +71,9 @@ COPY start.sh /app/
 #    chown -R pitablet:pitablet /app && \
 
 # Configure desktop preferences
-RUN ln -s /home/pitablet/Pictures/Rocky\ Mountains\ \(Day\).png /etc/alternatives/desktop-background && \
-    sed -i 's/single_click=0/single_click=1/g' /etc/xdg/libfm/libfm.conf
+#RUN ln -s /home/pitablet/Pictures/Rocky\ Mountains\ \(Day\).png /etc/alternatives/desktop-background && \
+#    sed -i 's/single_click=0/single_click=1/g' /etc/xdg/libfm/libfm.conf
+RUN sed -i 's/single_click=0/single_click=1/g' /etc/xdg/libfm/libfm.conf
 
 # Complete boot
 RUN chmod +x /home/pitablet/start.sh
