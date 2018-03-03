@@ -22,8 +22,8 @@ RUN apt-get update && apt-get -y install \
 
 # Install LXDE desktop environment and dependencies
 RUN apt-get update && apt-get --install-recommends -y install \
-    xserver-xorg \
-    lightdm \
+#    xserver-xorg \
+#    lightdm \
     lxde
 
 # Install bluetooth stack (bluez) and all dependencies
