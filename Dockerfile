@@ -67,14 +67,15 @@ COPY media/* /home/pitablet/Pictures/
 USER root
 COPY config/* src/* /app/
 COPY start.sh /app/
-#RUN chown -R pitablet:pitablet /home/pitablet && \
-#    chown -R pitablet:pitablet /app && \
 
-# Configure desktop preferences
-#RUN ln -s /home/pitablet/Pictures/Rocky\ Mountains\ \(Day\).png /etc/alternatives/desktop-background && \
-#    sed -i 's/single_click=0/single_click=1/g' /etc/xdg/libfm/libfm.conf
-RUN sed -i 's/single_click=0/single_click=1/g' /etc/xdg/libfm/libfm.conf
+# Configure desktop preferences # TODO: is this the proper way to set desktop background?
+RUN ln -f -s /home/pitablet/Pictures/Rocky\ Mountains\ \(Day\).png /etc/alternatives/desktop-background && \
+    sed -i 's/single_click=0/single_click=1/g' /etc/xdg/libfm/libfm.conf
 
-# Complete boot
-RUN chmod +x /app/start.sh
+# Ensure filesystem owner, group, and permissions
+RUN chown -R pitablet:pitablet /home/pitablet && \
+    chown -R pitablet:pitablet /app && \
+    chmod +x /app/start.sh
+
+# Boot app
 CMD ["bash", "/app/start.sh"]
