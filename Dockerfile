@@ -90,7 +90,8 @@ RUN chown -R pitablet:pitablet /home/pitablet
 
 # Configure desktop preferences
 RUN ln -s /home/pitablet/Pictures/Rocky\ Mountains\ \(Day\).png /etc/alternatives/desktop-background && \
-    sed -i 's/single_click=0/single_click=1/g' /etc/xdg/libfm/libfm.conf
+    sed -i 's/single_click=0/single_click=1/g' /etc/xdg/libfm/libfm.conf && \
+    echo "xserver-command=X -bs -core -nocursor" >> /etc/lightdm/lightdm.conf
 
 # Complete boot
 USER root
