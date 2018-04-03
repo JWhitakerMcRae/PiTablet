@@ -13,7 +13,7 @@ RUN apt-get update && apt-get -y install \
     net-tools \
     openssh-server \
     pkgconf \
-    python-pip \
+    python3-dev \
     python3-pip \
     raspi-config \
     rpi-update \
@@ -21,33 +21,35 @@ RUN apt-get update && apt-get -y install \
     wget
 
 # Install LXDE desktop environment and dependencies
-RUN apt-get update && apt-get -y install \
-    lxde \
+RUN apt-get update && apt-get --install-recommends -y install \
+    xserver-xorg \
     lightdm \
-    xserver-xorg
+    lxde
 
-# Install base applications (rec then sug)
+# Install bluetooth stack (bluez) and all dependencies
 RUN apt-get update && apt-get -y install \
-    clipit \
-    firefox-esr \
-    gnome-mplayer \
-    gnome-system-tools \
-    network-manager-gnome \
-    vlc \
-    usermode
-RUN apt-get update && apt-get -y install \
-    lxlauncher \
-    lxtask \
-    xfce4-power-manager
+    bluetooth \
+    bluez \
+    libbluetooth-dev \
+    libboost-all-dev \
+    libboost-python-dev \
+    libglib2.0-dev
 
 # Install GTK+3 and dependencies (http://pygobject.readthedocs.io/en/latest/getting_started.html)
 RUN apt-get update && apt-get -y install \
-    python-gi \
-    python-gi-cairo \
+    gtk+3.0 \
+    gobject-introspection \
     python3-gi \
-    python3-gi-cairo \
-    gir1.2-gtk-3.0 \
-    gobject-introspection
+    python3-gi-cairo
+
+# Install script requirements
+RUN pip3 install -U \
+    flask \
+    gattlib \
+    netifaces \
+    pybluez \
+    pyserial \
+    requests
 
 # Create default user, set to auto login
 RUN useradd -m "pitablet" && \
@@ -56,44 +58,25 @@ RUN useradd -m "pitablet" && \
     echo "[SeatDefaults]" >> /etc/lightdm/lightdm.conf && \
     echo "autologin-user=pitablet" >> /etc/lightdm/lightdm.conf
 
-# Install dependencies for the STM-8 and J-Link packages
-RUN apt-get update && apt-get -y install \
-    git \
-    libstdc++6 \
-    libusb-1.0.0-dev \
-    sdcc
-
-# Install and configure STM-8 package (https://github.com/vdudouyt/stm8flash.git)
-ADD packages/stm8flash.tgz /root/
-RUN cd /root/stm8flash && make && make install
-
-# Install and configure J-Link package (https://www.segger.com/downloads/jlink/)
-ADD packages/JLink_Linux_V612f_arm.tgz /opt/SEGGER/
-RUN cd /opt/SEGGER && ln -s JLink_Linux_V612f_arm JLink && \
-    cd /opt/SEGGER/JLink && cp -p 99-jlink.rules /etc/udev/rules.d/
-
-# Fix J-Link ARM package issues (could change with newer versions than 6.12)
-RUN cd /opt/SEGGER/JLink && ln -s libjlinkarm.so.6 libjlinkarm.so.5
-RUN cd /lib && ln -s arm-linux-gnueabihf/libudev.so.1 libudev.so.0
-
-# Install script requirements
-RUN pip install -U \
-    awscli \
-    pyserial \
-    requests
-
-# Copy scripts, icons, and media
-COPY scripts/* /home/pitablet/
+# Copy user data
+USER pitablet
 COPY icons/* /home/pitablet/Desktop/
 COPY media/* /home/pitablet/Pictures/
-RUN chown -R pitablet:pitablet /home/pitablet
 
-# Configure desktop preferences
-RUN ln -s /home/pitablet/Pictures/Rocky\ Mountains\ \(Day\).png /etc/alternatives/desktop-background && \
+# Copy app data
+USER root
+COPY config/* src/* /app/
+COPY start.sh /app/
+
+# Configure desktop preferences # TODO: is this the proper way to set desktop background?
+RUN ln -f -s /home/pitablet/Pictures/Rocky\ Mountains\ \(Day\).png /etc/alternatives/desktop-background && \
     sed -i 's/single_click=0/single_click=1/g' /etc/xdg/libfm/libfm.conf && \
     echo "xserver-command=X -bs -core -nocursor" >> /etc/lightdm/lightdm.conf
 
-# Complete boot
-USER root
-RUN chmod +x /home/pitablet/start.sh
-CMD ["bash", "/home/pitablet/start.sh"]
+# Ensure filesystem owner, group, and permissions
+RUN chown -R pitablet:pitablet /home/pitablet && \
+    chown -R pitablet:pitablet /app && \
+    chmod +x /app/start.sh
+
+# Boot app
+CMD ["bash", "/app/start.sh"]
