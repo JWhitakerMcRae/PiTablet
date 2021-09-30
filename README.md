@@ -1,7 +1,7 @@
 # PiTablet
 Handheld tablet built around the Raspberry Pi 3 B+ + 7" touchscreen, as a Docker container with Resin support
 
-## Prerequisites:
+## BOM:
 1. Raspberry Pi 3 B+ (https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/)
 1. Raspberry Pi 7" touchscreen (https://www.raspberrypi.org/products/raspberry-pi-touch-display/)
 1. PiCAN2 HAT (https://www.skpang.co.uk/collections/hats/products/pican2-can-bus-board-for-raspberry-pi-2-3)
